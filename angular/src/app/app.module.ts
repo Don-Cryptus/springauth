@@ -3,11 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { RegisterComponent } from './auth/register/register.component';
+
+import { AuthModule } from './auth/auth.module';
 
 @NgModule({
-  declarations: [AppComponent, RegisterComponent],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
+  declarations: [AppComponent],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, AuthModule],
   providers: [],
   bootstrap: [AppComponent],
 })

@@ -1,1 +1,40 @@
-<p>input works!</p>
+<div>
+  <label for="email" class="block text-sm font-medium text-gray-700">
+    Email address
+  </label>
+  <div class="mt-1">
+    <input
+      [formControl]="control"
+      [type]="type"
+      [placeholder]="placeholder"
+      class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+    />
+  </div>
+</div>
+<ng-container *ngIf="control.touched && control.dirty">
+  <p *ngIf="control.errors?.['pattern']" class="text-red-400">
+    Passwords must be at least 8 characters long and contain at least one
+    number, one uppercase letter, and one lowercase letter.
+  </p>
+  <p *ngIf="control.errors?.['required']" class="text-red-400">
+    Field is required
+  </p>
+  <p *ngIf="control.errors?.['minlength']" class="text-red-400">
+    The value you inputted is
+    {{control.errors?.['minlength']?.["actualLength"]}}
+    charachters long. It should be at least
+    {{control.errors?.['minlength']?.["requiredLength"]}}
+    charachters long.
+  </p>
+  <p *ngIf="control.errors?.['email']" class="text-red-400">
+    You must enter a valid email
+  </p>
+  <p *ngIf="control.errors?.['min']" class="text-red-400">Value too low.</p>
+  <p *ngIf="control.errors?.['max']" class="text-red-400">Value too high.</p>
+  <p *ngIf="control.errors?.['noMatch']" class="text-red-400">
+    Passwords do not match.
+  </p>
+  <p *ngIf="control.errors?.['emailTaken']" class="text-red-400">
+    Email taken. Please try another email.
+  </p>
+</ng-container>
