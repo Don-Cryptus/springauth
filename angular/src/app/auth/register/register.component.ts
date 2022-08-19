@@ -12,13 +12,16 @@ import { RegisterValidators } from '../validators/register-validators';
 export class RegisterComponent implements OnInit {
   constructor(private auth: AuthService) {}
 
-  name = new FormControl('', [Validators.required, Validators.minLength(3)]);
-  email = new FormControl('', [Validators.required, Validators.email]);
-  password = new FormControl('', [
+  name = new FormControl('don', [Validators.required, Validators.minLength(3)]);
+  email = new FormControl('don@don.don', [
+    Validators.required,
+    Validators.email,
+  ]);
+  password = new FormControl('C4ohJ7A3zPux8q', [
     Validators.required,
     Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/),
   ]);
-  confirm_password = new FormControl('', [Validators.required]);
+  confirm_password = new FormControl('C4ohJ7A3zPux8q', [Validators.required]);
 
   inSubmision = false;
   showAlert = false;

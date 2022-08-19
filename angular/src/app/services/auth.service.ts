@@ -9,10 +9,11 @@ import { environment } from '../../environments/environment';
 export class AuthService {
   constructor(private http: HttpClient) {}
 
-  public async register({ email, password }: User) {
+  public async register({ email, password, name }: User) {
     if (!password) {
       throw new Error('Password not provided!');
     }
-    const user = this.http.get<User>(environment.url);
+    console.log(email, password, name);
+    // const user = this.http.get<User>(environment.url);
   }
 }
