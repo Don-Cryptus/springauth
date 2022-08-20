@@ -22,8 +22,9 @@ public class AuthController {
     PasswordEncoder encoder;
 
 
-    @PostMapping("/signup")
+    @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
+        System.out.println(registerRequest.toString());
         if (userRepository.existsByUsername(registerRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()

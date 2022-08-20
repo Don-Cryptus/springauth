@@ -1,4 +1,4 @@
-package com.bezkoder.springjwt.security.jwt;
+package com.springauth.security.jwt;
 
 import java.util.Date;
 
