@@ -26,6 +26,7 @@ public class AuthController {
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
         System.out.println(registerRequest.toString());
         if (userRepository.existsByUsername(registerRequest.getUsername())) {
+            System.out.println("Username is already taken!");
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Username is already taken!"));

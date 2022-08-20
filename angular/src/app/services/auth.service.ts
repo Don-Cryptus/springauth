@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '../model/user.model';
 import { environment } from '../../environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -9,11 +10,11 @@ import { environment } from '../../environments/environment';
 export class AuthService {
   constructor(private http: HttpClient) {}
 
-  public async register({ email, password, name }: User) {
-    if (!password) {
-      throw new Error('Password not provided!');
-    }
-    console.log(email, password, name);
-    // const user = this.http.get<User>(environment.url);
+  public register({ email, password, username }: User): Observable<User> {
+    return this.http.post<User>(`${environment.url}/api/auth/register`, {
+      email,
+      password,
+      username,
+    });
   }
 }

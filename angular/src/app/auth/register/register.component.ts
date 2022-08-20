@@ -12,7 +12,10 @@ import { RegisterValidators } from '../validators/register-validators';
 export class RegisterComponent implements OnInit {
   constructor(private auth: AuthService) {}
 
-  name = new FormControl('don', [Validators.required, Validators.minLength(3)]);
+  username = new FormControl('don', [
+    Validators.required,
+    Validators.minLength(3),
+  ]);
   email = new FormControl('don@don.don', [
     Validators.required,
     Validators.email,
@@ -32,7 +35,7 @@ export class RegisterComponent implements OnInit {
 
   registerForm = new FormGroup(
     {
-      name: this.name,
+      username: this.username,
       email: this.email,
       password: this.password,
       confirm_password: this.confirm_password,
@@ -46,18 +49,19 @@ export class RegisterComponent implements OnInit {
     this.alertColor = 'blue';
     this.inSubmision = true;
 
-    try {
-      this.auth.register(this.registerForm.value as User);
-    } catch (e) {
-      console.error(e);
-      this.alertMsg =
-        'An unexpected error has occurred. Please try again later.';
-      this.alertColor = 'red';
-      this.inSubmision = false;
-      return;
-    }
-
-    this.alertMsg = 'Success! Your account has been created.';
-    this.alertColor = 'green';
+    this.auth.register(this.registerForm.value as User).subscribe({
+      next: (data) => {
+        console.log(data);
+        this.alertMsg = 'Success! Your account has been created.';
+        this.alertColor = 'green';
+        this.inSubmision = false;
+      },
+      error: (err) => {
+        console.error(err);
+        this.alertMsg = err.error.message;
+        this.alertColor = 'red';
+        this.inSubmision = false;
+      },
+    });
   }
 }
