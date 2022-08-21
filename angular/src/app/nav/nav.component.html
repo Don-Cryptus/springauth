@@ -79,20 +79,23 @@
             <a
               href="/"
               routerLink="/"
-              class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
+              routerLinkActive="bg-gray-900"
+              [routerLinkActiveOptions]="{ exact: true }"
+              class="text-white px-3 py-2 rounded-md text-sm font-medium"
               aria-current="page"
               >Home</a
             >
             <a
               href="/login"
               routerLink="login"
-              href="#"
+              routerLinkActive="bg-gray-900"
               class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
               >Login</a
             >
             <a
               href="/register"
               routerLink="register"
+              routerLinkActive="bg-gray-900"
               class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
               >Register</a
             >
@@ -202,7 +205,9 @@
       <a
         href="/"
         routerLink="/"
-        class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="text-white block px-3 py-2 rounded-md text-base font-medium"
+        routerLinkActive="bg-gray-900"
         aria-current="page"
         >Home</a
       >
