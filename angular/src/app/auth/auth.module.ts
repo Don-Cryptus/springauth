@@ -6,6 +6,6 @@ import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [RegisterComponent],
-  imports: [CommonModule, SharedModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, SharedModule, ReactiveFormsModule],
 })
 export class AuthModule {}
