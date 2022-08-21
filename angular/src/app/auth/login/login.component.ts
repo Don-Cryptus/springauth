@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
-import { User } from 'src/app/model/user.model';
+import { LoginReq } from 'src/app/model/login.model';
 import { AuthService } from 'src/app/services/auth.service';
+import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -9,7 +10,11 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  constructor(private auth: AuthService) {}
+  [x: string]: any;
+  constructor(
+    private auth: AuthService,
+    private tokenStorage: TokenStorageService
+  ) {}
 
   email = new FormControl('don@don.don', [
     Validators.required,
@@ -38,9 +43,10 @@ export class LoginComponent implements OnInit {
     this.alertColor = 'blue';
     this.inSubmision = true;
 
-    this.auth.login(this.loginForm.value as User).subscribe({
+    this.auth.login(this.loginForm.value as LoginReq).subscribe({
       next: (data) => {
-        console.log(data);
+        this.tokenStorage.saveToken(data.accessToken);
+        this.tokenStorage.saveUser(data);
         this.alertMsg = 'Success! Your have been logged in.';
         this.alertColor = 'green';
         this.inSubmision = false;
