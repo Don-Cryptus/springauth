@@ -5,6 +5,7 @@
       <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
         <!-- Mobile menu button-->
         <button
+          (click)="navbar = !navbar"
           type="button"
           class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
           aria-controls="mobile-menu"
@@ -19,7 +20,7 @@
             Menu open: "hidden", Menu closed: "block"
           -->
           <svg
-            class="block h-6 w-6"
+            class="h-6 w-6 {{ navbar && 'hidden' }}"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -41,7 +42,7 @@
             Menu open: "block", Menu closed: "hidden"
           -->
           <svg
-            class="hidden h-6 w-6"
+            class="h-6 w-6 {{ !navbar && 'hidden' }}"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -76,28 +77,24 @@
           <div class="flex space-x-4">
             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
             <a
-              href="#"
+              href="/"
+              routerLink="/"
               class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
               aria-current="page"
-              >Dashboard</a
+              >Home</a
             >
-
             <a
+              href="/login"
+              routerLink="login"
               href="#"
               class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-              >Team</a
+              >Login</a
             >
-
             <a
-              href="#"
+              href="/register"
+              routerLink="register"
               class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-              >Projects</a
-            >
-
-            <a
-              href="#"
-              class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-              >Calendar</a
+              >Register</a
             >
           </div>
         </div>
@@ -132,6 +129,7 @@
         <div class="ml-3 relative">
           <div>
             <button
+              (click)="userMenu = !userMenu"
               type="button"
               class="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
               id="user-menu-button"
@@ -158,7 +156,9 @@
               To: "transform opacity-0 scale-95"
           -->
           <div
-            class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+            class="{{
+              !userMenu && 'hidden'
+            }} origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
             role="menu"
             aria-orientation="vertical"
             aria-labelledby="user-menu-button"
@@ -196,32 +196,29 @@
   </div>
 
   <!-- Mobile menu, show/hide based on menu state. -->
-  <div class="sm:hidden" id="mobile-menu">
+  <div class="sm:hidden {{ !navbar && 'hidden' }}" id="mobile-menu">
     <div class="px-2 pt-2 pb-3 space-y-1">
       <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
       <a
-        href="#"
+        href="/"
+        routerLink="/"
         class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
         aria-current="page"
-        >Dashboard</a
+        >Home</a
       >
 
       <a
-        href="#"
+        href="/login"
+        routerLink="login"
         class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-        >Team</a
+        >Login</a
       >
 
       <a
-        href="#"
+        href="/register"
+        routerLink="register"
         class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-        >Projects</a
-      >
-
-      <a
-        href="#"
-        class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-        >Calendar</a
+        >Register</a
       >
     </div>
   </div>
