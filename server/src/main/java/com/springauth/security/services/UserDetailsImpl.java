@@ -1,17 +1,17 @@
 package com.springauth.security.services;
 
-import java.util.Collection;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.springauth.entity.User;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.Serial;
+import java.util.Collection;
 
 @Data
 public class UserDetailsImpl implements UserDetails {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private Long id;
