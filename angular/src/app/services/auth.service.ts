@@ -17,4 +17,11 @@ export class AuthService {
       username,
     });
   }
+
+  public login({ email, password }: User): Observable<User> {
+    return this.http.post<User>(`${environment.url}/api/auth/login`, {
+      email,
+      password,
+    });
+  }
 }
