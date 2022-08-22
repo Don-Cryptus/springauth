@@ -8,6 +8,6 @@ export interface LoginRes {
 }
 
 export interface LoginReq {
-  username: string;
+  email: string;
   password: string;
 }

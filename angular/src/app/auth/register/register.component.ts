@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { User } from 'src/app/model/register.model';
+import { LoginReq } from 'src/app/model/login.model';
+import { RegisterReq } from 'src/app/model/register.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { RegisterValidators } from '../validators/register-validators';
 
@@ -49,7 +50,7 @@ export class RegisterComponent implements OnInit {
     this.alertColor = 'blue';
     this.inSubmision = true;
 
-    this.auth.register(this.registerForm.value as User).subscribe({
+    this.auth.register(this.registerForm.value as RegisterReq).subscribe({
       next: (data) => {
         console.log(data);
         this.alertMsg = 'Success! Your account has been created.';
