@@ -2,7 +2,6 @@ package com.springauth.security;
 
 import com.springauth.security.jwt.AuthEntryPointJwt;
 import com.springauth.security.jwt.AuthTokenFilter;
-import com.springauth.security.services.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,12 +20,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
-    private final UserDetailsServiceImpl userDetailsService;
 
     private final AuthEntryPointJwt unauthorizedHandler;
 
-    public WebSecurityConfig(UserDetailsServiceImpl userDetailsService, AuthEntryPointJwt unauthorizedHandler) {
-        this.userDetailsService = userDetailsService;
+    public WebSecurityConfig(AuthEntryPointJwt unauthorizedHandler) {
         this.unauthorizedHandler = unauthorizedHandler;
     }
 
@@ -35,16 +32,10 @@ public class WebSecurityConfig {
         return new AuthTokenFilter();
     }
 
-
     @Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
-
-//    @Autowired
-//    AuthenticationManager authenticationManagerB(AuthenticationManagerBuilder authBuilder) throws Exception {
-//        return authBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder()).and().build();
-//    }
 
     @Bean
     PasswordEncoder passwordEncoder() {

@@ -1,6 +1,5 @@
 export interface LoginRes {
   id: number;
-  token: string;
   type: string;
   username: string;
   email: string;
@@ -8,6 +7,6 @@ export interface LoginRes {
 }
 
 export interface LoginReq {
-  email: string;
+  username: string;
   password: string;
 }

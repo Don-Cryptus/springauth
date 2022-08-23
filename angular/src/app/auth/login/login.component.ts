@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LoginReq } from 'src/app/model/login.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
@@ -10,15 +10,14 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  [x: string]: any;
   constructor(
     private auth: AuthService,
     private tokenStorage: TokenStorageService
   ) {}
 
-  email = new FormControl('don@don.don', [
+  username = new FormControl('don', [
     Validators.required,
-    Validators.email,
+    Validators.minLength(3),
   ]);
   password = new FormControl('C4ohJ7A3zPux8q', [
     Validators.required,
@@ -33,7 +32,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   loginForm = new FormGroup({
-    email: this.email,
+    username: this.username,
     password: this.password,
   });
 
@@ -41,10 +40,10 @@ export class LoginComponent implements OnInit {
     this.showAlert = true;
     this.alertMsg = 'Please wait! Your are logging in.';
     this.alertColor = 'blue';
-    this.inSubmision = true;
 
     this.auth.login(this.loginForm.value as LoginReq).subscribe({
       next: (data) => {
+        console.log(data);
         this.tokenStorage.saveToken(data.accessToken);
         this.tokenStorage.saveUser(data);
         this.alertMsg = 'Success! Your have been logged in.';

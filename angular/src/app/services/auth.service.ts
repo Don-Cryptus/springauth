@@ -23,9 +23,9 @@ export class AuthService {
     });
   }
 
-  public login({ email, password }: LoginReq): Observable<LoginRes> {
+  public login({ username, password }: LoginReq): Observable<LoginRes> {
     return this.http.post<LoginRes>(`${environment.url}/api/auth/login`, {
-      email,
+      username,
       password,
     });
   }
