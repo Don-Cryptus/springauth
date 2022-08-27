@@ -2,6 +2,7 @@ package com.springauth.security;
 
 import com.springauth.security.jwt.AuthEntryPointJwt;
 import com.springauth.security.jwt.AuthTokenFilter;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,13 +20,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@AllArgsConstructor
 public class WebSecurityConfig {
 
     private final AuthEntryPointJwt unauthorizedHandler;
-
-    public WebSecurityConfig(AuthEntryPointJwt unauthorizedHandler) {
-        this.unauthorizedHandler = unauthorizedHandler;
-    }
 
     @Bean
     AuthTokenFilter authenticationJwtTokenFilter() {
@@ -47,7 +45,8 @@ public class WebSecurityConfig {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/api/auth/**").permitAll()
+                .authorizeRequests().antMatchers("/api/auth/**").permitAll().and()
+                .authorizeRequests().antMatchers("/api/dashboard/**").authenticated()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

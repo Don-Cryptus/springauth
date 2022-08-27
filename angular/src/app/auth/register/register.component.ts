@@ -52,7 +52,7 @@ export class RegisterComponent implements OnInit {
 
     this.auth.register(this.registerForm.value as RegisterReq).subscribe({
       next: (data) => {
-        console.log(data);
+
         this.alertMsg = 'Success! Your account has been created.';
         this.alertColor = 'green';
         this.inSubmision = false;

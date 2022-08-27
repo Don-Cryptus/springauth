@@ -1,14 +1,20 @@
 package com.springauth.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Entity
-@Data
-@Table(name="`user`")
+@NoArgsConstructor
+@ToString
+@Setter
+@Getter
+@Table(name = "`user`")
 public class User {
 
     @Id
@@ -26,9 +32,6 @@ public class User {
     @NotBlank
     @Size(max = 120)
     private String password;
-
-    public User() {
-    }
 
     public User(String username, String email, String password) {
         this.username = username;

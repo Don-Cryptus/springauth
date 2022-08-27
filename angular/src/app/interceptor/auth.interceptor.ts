@@ -22,7 +22,7 @@ export class AuthInterceptor implements HttpInterceptor {
     if (token != null) {
       const TOKEN_HEADER_KEY = 'Authorization';
       const TOKEN = 'Bearer ' + token;
-      console.log(TOKEN_HEADER_KEY, TOKEN);
+
       authReq = req.clone({
         headers: req.headers.set(TOKEN_HEADER_KEY, TOKEN),
       });
