@@ -44,12 +44,11 @@ export class LoginComponent implements OnInit {
     this.auth.login(this.loginForm.value as LoginReq).subscribe({
       next: (data) => {
         this.tokenStorage.saveToken(data.accessToken);
-        this.tokenStorage.saveToken(data.refreshToken);
+        this.tokenStorage.saveRefreshToken(data.refreshToken);
         this.tokenStorage.saveUser(data);
         this.alertMsg = 'Success! Your have been logged in.';
         this.alertColor = 'green';
         this.inSubmision = false;
-        console.log(this.auth.isAuthenticated());
       },
       error: (err) => {
         this.alertMsg = err.error.message;

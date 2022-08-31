@@ -2,7 +2,7 @@ package com.springauth.controller;
 
 import com.springauth.entity.RefreshToken;
 import com.springauth.entity.User;
-import com.springauth.exception.TokenRefreshException;
+import com.springauth.payload.exception.TokenRefreshException;
 import com.springauth.payload.request.LogOutRequest;
 import com.springauth.payload.request.LoginRequest;
 import com.springauth.payload.request.RegisterRequest;

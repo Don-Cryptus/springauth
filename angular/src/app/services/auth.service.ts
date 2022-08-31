@@ -9,6 +9,7 @@ import {
   RefreshTokenRequest,
   RefreshTokenResponse,
 } from '../model/refreshToken.model';
+import { JWT } from '../model/jwt.model';
 
 @Injectable({
   providedIn: 'root',
@@ -38,16 +39,23 @@ export class AuthService {
     });
   }
 
-  public refreshToken({
-    refreshToken,
-  }: RefreshTokenRequest): Observable<RefreshTokenResponse> {
-    return this.http.post<RefreshTokenResponse>(
-      `${environment.url}/api/auth/refreshtoken`,
-      { refreshToken }
-    );
+  public refreshToken(refreshToken: string) {
+    this.http
+      .post<RefreshTokenResponse>(`${environment.url}/api/auth/refreshtoken`, {
+        refreshToken,
+      })
+      .subscribe({
+        next: (data) => {
+          this.tokenStorage.saveToken(data.accessToken);
+          this.tokenStorage.saveRefreshToken(data.refreshToken);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
 
-  public parseJwt(token: string) {
+  public parseJwt(token: string): JWT {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     const jsonPayload = decodeURIComponent(
@@ -58,11 +66,7 @@ export class AuthService {
         .join('')
     );
 
-    return JSON.parse(jsonPayload) as {
-      exp: number;
-      iat: number;
-      sub: string;
-    };
+    return JSON.parse(jsonPayload);
   }
 
   public isAuthenticated(): boolean {
@@ -71,7 +75,7 @@ export class AuthService {
     if (!token) return false;
 
     const jwt = this.parseJwt(token);
-    console.log(jwt);
+
     // jwt token expires in the future
 
     return new Date(jwt.exp * 1000) > new Date();

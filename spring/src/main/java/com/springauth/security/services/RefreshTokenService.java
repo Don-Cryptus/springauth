@@ -1,7 +1,7 @@
 package com.springauth.security.services;
 
 import com.springauth.entity.RefreshToken;
-import com.springauth.exception.TokenRefreshException;
+import com.springauth.payload.exception.TokenRefreshException;
 import com.springauth.repository.RefreshTokenRepository;
 import com.springauth.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
