@@ -18,4 +18,9 @@ public class DashboardController {
     public String userAccess() {
         return "User Content.";
     }
+
+//    @GetMapping("/user")
+//    public String userAccess() {
+//        return "User Content.";
+//    }
 }
