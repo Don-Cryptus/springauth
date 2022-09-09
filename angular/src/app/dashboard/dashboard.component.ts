@@ -16,29 +16,17 @@ export class DashboardComponent implements OnInit {
     public unsplash: UnsplashService
   ) {}
 
-  ngOnInit(): void {
-    this.dashboard.all().subscribe({
-      next(value) {
-        console.log(value);
-      },
-      error(err) {
-        console.log(err);
-      },
-    });
-  }
+  ngOnInit(): void {}
 
   getQuery($event: string) {
     this.query = $event;
     this.unsplash.searchUnsplash(this.query).subscribe({
       next: (value) => {
         this.images = value;
-        console.log(this.images);
       },
       error: (err) => {
-        console.log(err);
+        console.error(err);
       },
     });
-
-    console.log(this.query);
   }
 }

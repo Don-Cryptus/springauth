@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { RegisterReq, RegisterRes } from '../model/register.model';
 import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { LoginReq, LoginRes } from '../model/login.model';
 import { TokenStorageService } from './token-storage.service';
 import {
@@ -15,10 +15,27 @@ import { JWT } from '../model/jwt.model';
   providedIn: 'root',
 })
 export class AuthService {
+  // Make _puppiesSource private so it's not accessible from the outside,
+  // expose it as puppies$ observable (read-only) instead.
+  // Write to _puppiesSource only through specified store methods below.
+  private readonly _isAuthenticated = new BehaviorSubject<boolean>(false);
+
+  // Exposed observable (read-only).
+  readonly isAuthenticated$ = this._isAuthenticated.asObservable();
+
   constructor(
     private http: HttpClient,
     private tokenStorage: TokenStorageService
   ) {}
+
+  // Get last value without subscribing to the puppies$ observable (synchronously).
+  public getIsAuthenticated() {
+    return this._isAuthenticated;
+  }
+
+  public setIsAuthenticated(state: boolean): void {
+    this._isAuthenticated.next(state);
+  }
 
   public register({
     email,
@@ -50,7 +67,7 @@ export class AuthService {
           this.tokenStorage.saveRefreshToken(data.refreshToken);
         },
         error: (err) => {
-          console.log(err);
+          console.error(err);
         },
       });
   }

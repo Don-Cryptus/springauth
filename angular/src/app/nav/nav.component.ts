@@ -1,4 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { AuthService } from '../services/auth.service';
 import { TokenStorageService } from '../services/token-storage.service';
 
 @Component({
@@ -16,7 +17,10 @@ export class NavComponent implements OnInit {
   showModeratorBoard = false;
   username?: string;
 
-  constructor(private tokenStorageService: TokenStorageService) {}
+  constructor(
+    private tokenStorageService: TokenStorageService,
+    private auth: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
@@ -25,6 +29,11 @@ export class NavComponent implements OnInit {
       const user = this.tokenStorageService.getUser();
       this.username = user?.username;
     }
+
+    this.auth.getIsAuthenticated().subscribe((value) => {
+      console.log(value);
+      this.isLoggedIn = value;
+    });
   }
 
   logout(): void {

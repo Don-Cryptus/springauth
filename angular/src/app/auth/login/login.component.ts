@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { LoginReq } from 'src/app/model/login.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
@@ -12,7 +13,8 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
 export class LoginComponent implements OnInit {
   constructor(
     private auth: AuthService,
-    private tokenStorage: TokenStorageService
+    private tokenStorage: TokenStorageService,
+    private router: Router
   ) {}
 
   username = new FormControl('don', [
@@ -49,6 +51,8 @@ export class LoginComponent implements OnInit {
         this.alertMsg = 'Success! Your have been logged in.';
         this.alertColor = 'green';
         this.inSubmision = false;
+        this.auth.setIsAuthenticated(true);
+        this.router.navigate(['dashboard']);
       },
       error: (err) => {
         this.alertMsg = err.error.message;
