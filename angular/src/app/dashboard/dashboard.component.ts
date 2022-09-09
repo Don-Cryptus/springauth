@@ -7,6 +7,7 @@ import { DashboardService } from '../services/dashboard.service';
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit {
+  query: string = '';
   constructor(public dashboard: DashboardService) {}
 
   ngOnInit(): void {

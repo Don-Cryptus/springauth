@@ -9,10 +9,17 @@ import { authInterceptorProviders } from './interceptor/auth.interceptor';
 import { NavComponent } from './nav/nav.component';
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [AppComponent, NavComponent, HomeComponent, DashboardComponent],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, AuthModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    AuthModule,
+    SharedModule,
+  ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent],
 })
