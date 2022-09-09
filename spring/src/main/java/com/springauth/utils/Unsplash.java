@@ -6,7 +6,6 @@ import lombok.Data;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.io.Reader;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -25,8 +24,7 @@ public class Unsplash {
                     .uri(URI.create("https://api.unsplash.com/search/photos?page=" + page + "&query=" + query + "&client_id=" + clientId))
                     .build();
             var response = HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
-
-            return new Gson().fromJson((Reader) response, UnsplashResponse.class);
+            return new Gson().fromJson(response.body(), UnsplashResponse.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }

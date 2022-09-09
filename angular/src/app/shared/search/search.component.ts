@@ -1,4 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 
 @Component({
   selector: 'app-search',
@@ -6,7 +14,8 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./search.component.css'],
 })
 export class SearchComponent implements OnInit {
-  @Input() value: String = '';
+  @Input() value: string = '';
+  @Output() newValue = new EventEmitter();
 
   constructor() {}
 
@@ -14,5 +23,6 @@ export class SearchComponent implements OnInit {
 
   onChange($event: Event) {
     this.value = ($event?.target as HTMLInputElement).value;
+    this.newValue.emit(this.value);
   }
 }

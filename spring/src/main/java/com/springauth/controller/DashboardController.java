@@ -25,6 +25,7 @@ public class DashboardController {
 
     @GetMapping("/searchunsplash")
     public UnsplashResponse searchUnsplash(@RequestParam String query) {
+        System.out.println(query);
         return unsplash.search(query);
     }
 }
