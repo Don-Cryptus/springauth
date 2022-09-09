@@ -26,6 +26,7 @@ export class NavComponent implements OnInit {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
 
     if (this.isLoggedIn) {
+      this.auth.setIsAuthenticated(true);
       const user = this.tokenStorageService.getUser();
       this.username = user?.username;
     }
