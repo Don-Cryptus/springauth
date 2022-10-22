@@ -38,8 +38,7 @@ class AuthControllerTest {
 
     @BeforeAll
     public void setup() {
-        User user = new User(username, email, encoder.encode(password));
-        userRepository.save(user);
+        userRepository.save(new User(username, email, encoder.encode(password)));
     }
 
     @Test
@@ -60,24 +59,39 @@ class AuthControllerTest {
     }
 
     @Test
-    void registerUser_alreadyExist() throws Exception {
+    void registerUser_usernameAlreadyExist() throws Exception {
 
-        RegisterRequest registerRequest = new RegisterRequest(email, password, password);
+        RegisterRequest registerRequest = new RegisterRequest(username, "test2@test.test", password);
+
         String registerRequestAsString = objectMapper.writeValueAsString(registerRequest);
 
-        var result = mockMvc.perform(post("/api/auth/register")
+        mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(registerRequestAsString)
                         .characterEncoding("utf-8"))
                 .andExpectAll(
-                        status().isOk(),
-                        MockMvcResultMatchers.jsonPath("$.message").value("User registered successfully!")
+                        status().is4xxClientError(),
+                        MockMvcResultMatchers.jsonPath("$.message").value("Error: Username is already taken!")
                 )
                 .andReturn();
+    }
 
-        System.out.println(111111);
-        System.out.println(result.getResponse().getContentAsString());
-        System.out.println(111111);
+    @Test
+    void registerUser_emailAlreadyExist() throws Exception {
+
+        RegisterRequest registerRequest = new RegisterRequest("test3", email, password);
+
+        String registerRequestAsString = objectMapper.writeValueAsString(registerRequest);
+
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(registerRequestAsString)
+                        .characterEncoding("utf-8"))
+                .andExpectAll(
+                        status().is4xxClientError(),
+                        MockMvcResultMatchers.jsonPath("$.message").value("Error: Email is already in use!")
+                )
+                .andReturn();
     }
 
     @Test
@@ -94,6 +108,22 @@ class AuthControllerTest {
                         MockMvcResultMatchers.jsonPath("$.username").value("test")
                 )
                 .andReturn();
+    }
 
+    @Test
+    void loginUser_notFound() throws Exception {
+        LoginRequest loginRequest = new LoginRequest("random", "random");
+        String loginRequestAsString = objectMapper.writeValueAsString(loginRequest);
+
+        var result = mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(loginRequestAsString)
+                        .characterEncoding("utf-8"))
+                .andExpectAll(
+                        status().is4xxClientError()
+//                        MockMvcResultMatchers.jsonPath("$.message").value("Error: Unauthorized")
+                )
+                .andReturn();
+        
     }
 }
