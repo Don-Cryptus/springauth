@@ -37,10 +37,6 @@ public class AuthController {
     private final JwtUtils jwtUtils;
     private final RefreshTokenService refreshTokenService;
 
-    @RequestMapping("/")
-    public @ResponseBody String greeting() {
-        return "Hello, World";
-    }
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
