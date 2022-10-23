@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import static com.springauth.testdata.UserTestData.*;
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -24,9 +26,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AuthControllerTest {
 
-    private final String username = "test";
-    private final String password = "testtest";
-    private final String email = "test@test.test";
     @Autowired
     PasswordEncoder encoder;
     @Autowired
@@ -38,13 +37,13 @@ class AuthControllerTest {
 
     @BeforeAll
     public void setup() {
-        userRepository.save(new User(username, email, encoder.encode(password)));
+        userRepository.save(new User(USERNAME, EMAIL, encoder.encode(PASSWORD)));
     }
 
     @Test
     void registerUser() throws Exception {
 
-        RegisterRequest registerRequest = new RegisterRequest("test1", "test1@test.test", password);
+        RegisterRequest registerRequest = new RegisterRequest("test1", "test1@test.test", PASSWORD);
         String registerRequestAsString = objectMapper.writeValueAsString(registerRequest);
 
         mockMvc.perform(post("/api/auth/register")
@@ -61,7 +60,7 @@ class AuthControllerTest {
     @Test
     void registerUser_usernameAlreadyExist() throws Exception {
 
-        RegisterRequest registerRequest = new RegisterRequest(username, "test2@test.test", password);
+        RegisterRequest registerRequest = new RegisterRequest(USERNAME, "test2@test.test", PASSWORD);
 
         String registerRequestAsString = objectMapper.writeValueAsString(registerRequest);
 
@@ -79,7 +78,7 @@ class AuthControllerTest {
     @Test
     void registerUser_emailAlreadyExist() throws Exception {
 
-        RegisterRequest registerRequest = new RegisterRequest("test3", email, password);
+        RegisterRequest registerRequest = new RegisterRequest("test3", EMAIL, PASSWORD);
 
         String registerRequestAsString = objectMapper.writeValueAsString(registerRequest);
 
@@ -96,7 +95,7 @@ class AuthControllerTest {
 
     @Test
     void loginUser() throws Exception {
-        LoginRequest loginRequest = new LoginRequest(username, password);
+        LoginRequest loginRequest = new LoginRequest(USERNAME, PASSWORD);
         String loginRequestAsString = objectMapper.writeValueAsString(loginRequest);
 
         mockMvc.perform(post("/api/auth/login")
@@ -115,15 +114,15 @@ class AuthControllerTest {
         LoginRequest loginRequest = new LoginRequest("random", "random");
         String loginRequestAsString = objectMapper.writeValueAsString(loginRequest);
 
-        var result = mockMvc.perform(post("/api/auth/login")
+        mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(loginRequestAsString)
                         .characterEncoding("utf-8"))
                 .andExpectAll(
-                        status().is4xxClientError()
-//                        MockMvcResultMatchers.jsonPath("$.message").value("Error: Unauthorized")
+                        status().is4xxClientError(),
+                        status().reason(containsString("Unauthorized"))
                 )
                 .andReturn();
-        
+
     }
 }
