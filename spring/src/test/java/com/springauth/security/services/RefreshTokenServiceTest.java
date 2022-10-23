@@ -17,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.Instant;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -49,14 +50,33 @@ class RefreshTokenServiceTest {
         User user = new User(1L, USERNAME, EMAIL, PASSWORD);
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(refreshTokenRepository.save(any())).then(AdditionalAnswers.returnsFirstArg());
-//        when(tokenConfiguration.getRefreshTokenDurationMs()).thenReturn(1000L);
     }
 
     @Test
     void createRefreshToken() {
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(1L);
-        log.warn("refreshToken: {}", refreshToken);
         assertTrue(refreshToken.getToken().length() > 0);
+    }
+
+    @Test
+    void createRefreshToken_noUserFound() {
+        NoSuchElementException thrown = assertThrows(
+                NoSuchElementException.class,
+                () -> refreshTokenService.createRefreshToken(2L)
+        );
+
+        assertTrue(thrown.getMessage().contains("No value present"));
+    }
+
+
+    @Test
+    void verifyExpiration_validToken() {
+        RefreshToken refreshToken = new RefreshToken();
+        refreshToken.setUser(userRepository.findById(1L).get());
+        refreshToken.setExpiryDate(Instant.now().plusMillis(1000000));
+        refreshToken.setToken(UUID.randomUUID().toString());
+
+        assertTrue(refreshTokenService.verifyExpiration(refreshToken).getToken().length() > 0);
     }
 
     @Test
