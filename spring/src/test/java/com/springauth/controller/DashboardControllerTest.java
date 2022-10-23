@@ -43,9 +43,6 @@ class DashboardControllerTest {
 
     @Test
     void userAccess() throws Exception {
-        System.out.println(userRepository.findAll().size());
-        System.out.println(userRepository.findAll().size());
-        System.out.println(userRepository.findAll().size());
         String token = jwtUtils.generateTokenFromUsername(USERNAME);
 
         mockMvc.perform(get("/api/dashboard/user")
