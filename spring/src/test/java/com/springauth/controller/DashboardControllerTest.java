@@ -56,13 +56,11 @@ class DashboardControllerTest {
 
     @Test
     void userAccess_noToken() throws Exception {
-        var result = mockMvc.perform(get("/api/dashboard/user"))
+        mockMvc.perform(get("/api/dashboard/user"))
                 .andExpectAll(
                         status().is4xxClientError(),
                         status().reason(containsString("Unauthorized"))
                 )
                 .andReturn();
-
-        System.out.println(result.getResponse().getErrorMessage());
     }
 }
